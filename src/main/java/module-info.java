@@ -15,4 +15,6 @@ module com.example.dei_examen_alumno {
     exports com.example.dei_examen_alumno;
     opens com.example.dei_examen_alumno.model to javafx.fxml, org.hibernate.orm.core;
     exports com.example.dei_examen_alumno.model;
+    opens com.example.dei_examen_alumno.controller to javafx.fxml;
+    exports com.example.dei_examen_alumno.controller;
 }

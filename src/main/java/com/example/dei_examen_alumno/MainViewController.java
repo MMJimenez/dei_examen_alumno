@@ -2,7 +2,7 @@ package com.example.dei_examen_alumno;
 
 import com.example.dei_examen_alumno.model.Alumno;
 import com.example.dei_examen_alumno.utils.HibernateUtil;
-import javafx.collections.ObservableList;
+import com.example.dei_examen_alumno.controller.JasperController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,9 +10,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import org.hibernate.query.Query;
+import net.sf.jasperreports.engine.JRException;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -110,12 +111,20 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void showReport() {
-
+        try {
+            JasperController.showReport();
+        } catch (JRException | ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     private void downloadReport() {
-
+        try {
+            JasperController.generateReport();
+        } catch (JRException | ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
