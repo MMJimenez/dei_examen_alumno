@@ -4,12 +4,16 @@ import com.example.dei_examen_alumno.model.Alumno;
 import com.example.dei_examen_alumno.utils.HibernateUtil;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import org.hibernate.query.Query;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -85,15 +89,33 @@ public class MainViewController implements Initializable {
 
     public ArrayList<Alumno> alumnos;
 
+    @FXML
+    private Button btnShowReport;
+
+    @FXML
+    private Button btnDownloadReport;
+
     @Override
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         alumnos = new ArrayList<>();
-        alumnos.add(new Alumno("Miguel", "Garcia", 3.5, 4.5, 5.6, 7.3, 6.8, 5.4, 8.4));
-        alumnos.add(new Alumno("Pepe", "Macias", 4.5, 6.5, 1.7, 9.3, 2.5, 6.9, 3.10));
-        alumnos.add(new Alumno("Antonia", "Fernandez", 3.5, 4.9, 1.9, 4.8, 10.0, 5.4, 7.3));
+        fillAlumnos();
         inflateTable();
         updateTable();
+    }
+
+    private void fillAlumnos() {
+        descargar();
+    }
+
+    @FXML
+    private void showReport() {
+
+    }
+
+    @FXML
+    private void downloadReport() {
+
     }
 
     @FXML
@@ -106,21 +128,31 @@ public class MainViewController implements Initializable {
             fail.setContentText("Faltan campos por rellenar");
             fail.showAndWait();
             return;
+
+        } else if (Double.valueOf(inputAD.getText()) > 10 || Double.valueOf(inputDI.getText()) > 10 || Double.valueOf(inputEIE.getText()) > 10 ||
+                Double.valueOf(inputHCL.getText()) > 10 || Double.valueOf(inputPMDM.getText()) > 10 || Double.valueOf(inputPSP.getText()) > 10 || Double.valueOf(inputSGE.getText()) > 10
+                || Double.valueOf(inputAD.getText()) < 0 || Double.valueOf(inputDI.getText()) < 0 || Double.valueOf(inputEIE.getText()) < 0 ||
+                Double.valueOf(inputHCL.getText()) < 0 || Double.valueOf(inputPMDM.getText()) < 0 || Double.valueOf(inputPSP.getText()) < 0 || Double.valueOf(inputSGE.getText()) < 0) {
+            Alert fail = new Alert(Alert.AlertType.INFORMATION);
+            fail.setHeaderText("ERROR");
+            fail.setContentText("Las notas no pueden estar por debajo de 0 ni por encima de 10");
+            fail.showAndWait();
+            return;
         }
 
         Alumno alumno = new Alumno(
-            inputName.getText(),
-            inputLastName.getText(),
-            Double.valueOf(inputAD.getText()),
-            Double.valueOf(inputSGE.getText()),
-            Double.valueOf(inputDI.getText()),
-            Double.valueOf(inputPMDM.getText()),
-            Double.valueOf(inputEIE.getText()),
-            Double.valueOf(inputPSP.getText()),
-            Double.valueOf(inputHCL.getText())
+                inputName.getText(),
+                inputLastName.getText(),
+                Double.valueOf(inputAD.getText()),
+                Double.valueOf(inputSGE.getText()),
+                Double.valueOf(inputDI.getText()),
+                Double.valueOf(inputPMDM.getText()),
+                Double.valueOf(inputEIE.getText()),
+                Double.valueOf(inputPSP.getText()),
+                Double.valueOf(inputHCL.getText())
         );
 
-        alumnos.add(alumno);
+       alumnos.add(alumno);
         updateTable();
     }
 
@@ -137,6 +169,56 @@ public class MainViewController implements Initializable {
         colPSP.setCellValueFactory(new PropertyValueFactory("PSP"));
         colEIE.setCellValueFactory(new PropertyValueFactory("EIE"));
         colHLC.setCellValueFactory(new PropertyValueFactory("HLC"));
+    }
+
+    @FXML
+    public void onClickTable(MouseEvent event) {
+        table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Alumno alumno = table.getSelectionModel().getSelectedItem();
+                String text = "";
+                if (alumno.getAD() >= 5 && alumno.getSGE() >= 5 && alumno.getDI() >= 5 && alumno.getPMDM() >= 5
+                        && alumno.getPSP() >= 5 && alumno.getEIE() >= 5 && alumno.getHLC() >= 5) {
+
+                    Double averagePoints = (alumno.getAD() + alumno.getSGE() + alumno.getDI()
+                            + alumno.getPMDM() + alumno.getPSP() + alumno.getEIE() + alumno.getHLC()) / 7;
+
+                    DecimalFormat decimalFormat = new DecimalFormat("##.00");
+                    text = "La media de todos los módulos es: " + decimalFormat.format(averagePoints);
+                } else {
+                    int numberOfFailedSubjects = 0;
+                    if (alumno.getAD() < 5) {
+                        numberOfFailedSubjects++;
+                    }
+                    if (alumno.getSGE() < 5) {
+                        numberOfFailedSubjects++;
+                    }
+                    if (alumno.getDI() < 5) {
+                        numberOfFailedSubjects++;
+                    }
+                    if (alumno.getPMDM() < 5) {
+                        numberOfFailedSubjects++;
+                    }
+                    if (alumno.getPSP() < 5) {
+                        numberOfFailedSubjects++;
+                    }
+                    if (alumno.getEIE() < 5) {
+                        numberOfFailedSubjects++;
+                    }
+                    if (alumno.getHLC() < 5) {
+                        numberOfFailedSubjects++;
+                    }
+                    text = "El número de módulos suspensos es: " + numberOfFailedSubjects;
+                }
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Información del Alumno");
+                alert.setHeaderText(alumno.getName() + " " + alumno.getLastName());
+                alert.setContentText(text);
+                alert.showAndWait();
+            }
+        });
     }
 
     private void updateTable() {

@@ -8,48 +8,43 @@ public class Alumno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    public int id;
+    private int id;
 
     @Basic
     @Column(name = "nombre")
-    public String name;
+    private String name;
 
     @Basic
     @Column(name = "apellido")
-    public String lastName;
+    private String lastName;
 
     @Basic
     @Column
-    public Double AD;
+    private Double AD;
 
     @Basic
     @Column
-    public Double SGE;
-
-
-    @Basic
-    @Column
-    public Double DI;
-
+    private Double SGE;
 
     @Basic
     @Column
-    public Double PMDM;
-
-
-    @Basic
-    @Column
-    public Double PSP;
-
+    private Double DI;
 
     @Basic
     @Column
-    public Double EIE;
-
+    private Double PMDM;
 
     @Basic
     @Column
-    public Double HLC;
+    private Double PSP;
+
+    @Basic
+    @Column
+    private Double EIE;
+
+    @Basic
+    @Column
+    private Double HLC;
 
     public Alumno() {
 

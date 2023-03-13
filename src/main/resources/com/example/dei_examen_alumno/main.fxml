@@ -259,7 +259,7 @@
       </VBox>
    </left>
    <center>
-      <TableView fx:id="table" prefHeight="200.0" prefWidth="330.0">
+      <TableView fx:id="table" onMouseClicked="#onClickTable" prefHeight="200.0" prefWidth="330.0">
         <columns>
           <TableColumn fx:id="colID" prefWidth="75.0" text="Id" />
           <TableColumn fx:id="colName" prefWidth="75.0" text="Nombre" />
@@ -276,30 +276,34 @@
             <Insets right="10.0" />
          </opaqueInsets>
          <BorderPane.margin>
-            <Insets right="10.0" />
+            <Insets right="50.0" />
          </BorderPane.margin>
       </TableView>
    </center>
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="891.0" minWidth="10.0" prefWidth="268.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="891.0" minWidth="10.0" prefWidth="636.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="544.0" minWidth="10.0" prefWidth="203.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="891.0" minWidth="10.0" prefWidth="200.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="891.0" minWidth="10.0" prefWidth="178.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="891.0" minWidth="10.0" prefWidth="215.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="891.0" minWidth="10.0" prefWidth="165.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btnDownload" alignment="CENTER" mnemonicParsing="false" onAction="#descargar" text="DESCARGAR DATOS" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button fx:id="btnDownload" alignment="CENTER" mnemonicParsing="false" onAction="#descargar" text="DESCARGAR DATOS" GridPane.halignment="LEFT">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Button>
-            <Button fx:id="btnExit" alignment="CENTER" mnemonicParsing="false" onAction="#salir" text="SALIR DEL PROGRAMA" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="btnExit" alignment="CENTER" mnemonicParsing="false" onAction="#salir" text="SALIR DEL PROGRAMA" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
+            <Button fx:id="btnShowReport" alignment="CENTER" mnemonicParsing="false" onAction="#showReport" text="MOSTRAR REPORTE" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Button fx:id="btnDownloadReport" alignment="CENTER" mnemonicParsing="false" onAction="#downloadReport" text="DESCARGAR REPORTE" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
          </children>
+         <BorderPane.margin>
+            <Insets bottom="50.0" left="270.0" right="50.0" top="50.0" />
+         </BorderPane.margin>
       </GridPane>
    </bottom>
 </BorderPane>
